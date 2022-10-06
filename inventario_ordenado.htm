@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="inventario_ordenado.js"></script>
+    <script src="productos.js"></script>
+    <title>Inventario</title>
+</head>
+<body>
+    <div id="formulario">
+        <label for="nombre">Nombre del  producto: </label>
+        <input id="nombre" type="text"><br>
+        <label for="codigo">Codigo: </label>
+        <input id="codigo" type="number"><br>
+        <label for="cantidad">Cantidad: </label>
+        <input id="cantidad" type="number"><br>
+        <label for="precio">Precio: </label>  
+        <input id="precio" type="number"><br>
+        <label for="busqueda">Ingresar codigo(eliminar o buscar):</label>
+        <input id="busqueda" type="number"><br><br>
+
+        <button id="listar">Listar</button>
+        <button id="agregar">Agregar Producto</button>
+        <button id="eliminar">Eliminar Producto</button>
+        <button id="inverso">Listar inversamente</button>
+        <button id="buscar">Buscar</button>
+
+    </div>
+    <div id="lista"></div>
+    <script>
+ 
+        const inventario = new Inventario();
+
+        const nombre = document.getElementById("nombre");
+        const codigo = document.getElementById("codigo");
+        const cantidad = document.getElementById("cantidad");
+        const precio = document.getElementById("precio");
+        const lista = document.getElementById("lista");
+        const busqueda = document.getElementById("busqueda");
+        const posicion = document.getElementById("posicion");
+
+        const btnListar = document.getElementById("listar");
+        btnListar.addEventListener("click",()=>{
+        let listado = "";
+        listado = inventario.listar()
+        if(listado === ""){
+            return lista.innerHTML = "No hay registros";
+        }
+        lista.innerHTML = inventario.listar();
+        })
+
+        const btnAgregar = document.getElementById("agregar");
+        btnAgregar.addEventListener("click",()=>{
+            if(!codigo.value || !nombre.value || !cantidad.value || !precio.value){
+                return lista.innerHTML = "Faltan datos";
+            }
+            producto = new Producto(codigo.value,nombre.value,cantidad.value,precio.value)
+
+            if(false == inventario.agregar(producto)){
+                return lista.innerHTML = "Ya existe el codigo";
+            }
+            lista.innerHTML = inventario.listar();
+        })
+
+        const btnEliminar = document.getElementById("eliminar");
+        btnEliminar.addEventListener("click",()=>{
+            if(!busqueda.value){
+                return lista.innerHTML = "Falta el codigo para eliminar"
+            }
+            if(null == inventario.eliminar(busqueda.value)){
+                return lista.innerHTML = "No existe el elemento";
+            }
+            lista.innerHTML = inventario.listar();
+        })
+
+        const btnBuscar = document.getElementById("buscar");
+        btnBuscar.addEventListener("click",()=>{
+            if(!busqueda.value){
+                return lista.innerHTML = "Falta el codigo para buscar"
+            }
+            let objeto = inventario.buscar(busqueda.value);
+            if(objeto === null){
+                return lista.innerHTML = "No existe el objeto";
+            }
+            nombre.value = objeto.nombre;
+            codigo.value = objeto.codigo;
+            precio.value = objeto.costo;
+            cantidad.value = objeto.cantidad;
+        })
+
+        const btnInverso = document.getElementById("inverso");
+        btnInverso.addEventListener("click",()=>{
+            let listadoInverso = "";
+            listadoInverso = inventario.listarInverso()
+            if(listadoInverso === ""){
+                return lista.innerHTML = "No hay registros";
+            }
+            lista.innerHTML = inventario.listarInverso();
+        })
+
+    </script>
+</body>
+</html>
