@@ -13,23 +13,26 @@ class Inventario{
             if(item.codigo == this.arreglo[i].codigo){
                 return false;
             }
-
+            
             if(item.codigo < this.arreglo[0].codigo){
                 this.arreglo.push(aux);
-                for(let j = this.arreglo.length-1; j < 0; j--){
-                    this.arreglo[j] = this.arreglo[j-1];
+                for(let j = this.arreglo.length-1; j > 0; j--){
+                    this.arreglo[j-1] = this.arreglo[j];
                 }
                 this.arreglo[0] = item;
                 return true;
             }
-
             if(this.arreglo[i+1] == undefined){
+                console.log("s")
                     this.arreglo.push(item);
                     return true;
             }
 
             if(item.codigo > this.arreglo[i].codigo && item.codigo < this.arreglo[i+1].codigo){
-                for(let j = this.arreglo.length-1; j < i; j--){
+                console.log(this.arreglo[i+1].codigo);
+                console.log(item.codigo)
+                console.log(item.codigo < this.arreglo[i+1].codigo);
+                for(let j = this.arreglo.length-1; j >= i+1; j--){
                     this.arreglo[j] = this.arreglo[j-1];
                 }
                 this.arreglo.push(aux);
